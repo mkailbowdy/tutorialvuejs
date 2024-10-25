@@ -3,8 +3,8 @@ import { ref } from 'vue'
 import BaseInput from '@/components/BaseInput.vue'
 import BaseSelect from '@/components/BaseSelect.vue'
 import BaseCheckbox from '@/components/BaseCheckbox.vue'
-import BaseRadio from '@/components/BaseRadio.vue'
 import BaseRadioGroup from '@/components/BaseRadioGroup.vue'
+import axios from 'axios'
 
 const categories = [
   'sustainability',
@@ -32,12 +32,26 @@ const petOptions = ref([
   { label: 'Yes', value: '1' },
   { label: 'No', value: '0' },
 ])
+
+function sendForm() {
+  axios
+    .post(
+      'https://my-json-server.typicode.com/Code-Pop/Vue-3-Forms/events',
+      event.value
+    )
+    .then(function (response) {
+      console.log('Response', response)
+    })
+    .catch(function (err) {
+      console.log('Error', err)
+    })
+}
 </script>
 
 <template>
   <div>
     <h1>Create an event</h1>
-    <form>
+    <form @submit.prevent="sendForm">
       <BaseSelect
         :options="categories"
         label="Choose a category"

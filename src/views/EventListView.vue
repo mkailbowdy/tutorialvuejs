@@ -2,7 +2,6 @@
 import { ref, onMounted } from 'vue'
 import EventCard from '@/components/EventCard.vue'
 import EventService from '@/services/EventService.js'
-import SimpleForm from '@/views/SimpleFormView.vue';
 
 const events = ref(null)
 

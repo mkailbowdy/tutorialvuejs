@@ -1,4 +1,5 @@
 <script setup>
+import UniqueID from '@/features/UniqueID'
 defineProps({
   label: {
     type: String,
@@ -14,9 +15,11 @@ defineProps({
     required: true,
   },
 })
+
+const uuid = UniqueID().getID()
 </script>
 <template>
-  <label v-if="label">{{ label }}</label>
+  <label v-if="label" :for="uuid">{{ label }}</label>
   <select
     :value="modelValue"
     class="field"
@@ -26,6 +29,7 @@ defineProps({
         $emit('update:modelValue', $event.target.value)
       },
     }"
+    :id="uuid"
   >
     <option
       v-for="option in options"

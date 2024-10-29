@@ -8,9 +8,13 @@ const events = ref(null)
 const totalEvents = ref(0)
 
 const page = computed(() => props.page)
+
+const totalPages = computed(() => {
+  return Math.ceil(totalEvents.value / 2)
+})
+
 const hasNextPage = computed(() => {
-  const totalPages = Math.ceil(totalEvents.value / 2)
-  return page.value < totalPages
+  return page.value < totalPages.value
 })
 
 onMounted(() => {
@@ -38,7 +42,21 @@ onMounted(() => {
         :to="{ name: 'event-list', query: { page: page - 1 } }"
         rel="prev"
         v-if="page !== 1"
-        >&#60; Previous
+        >&#60; Prev
+      </router-link>
+
+      <!--  
+      
+      if currentPage === page, add the disabled attribute
+      
+      -->
+
+      <router-link
+        v-for="pagination in totalPages"
+        :to="{ name: 'event-list', query: { page: pagination } }"
+        :key="pagination"
+        :style="{ color: pagination === page ? '#888' : '' }"
+        >{{ pagination }}
       </router-link>
 
       <router-link

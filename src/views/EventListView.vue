@@ -2,7 +2,9 @@
 import { ref, onMounted, computed, watchEffect } from 'vue'
 import EventCard from '@/components/EventCard.vue'
 import EventService from '@/services/EventService.js'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const props = defineProps(['page'])
 const events = ref(null)
 const totalEvents = ref(0)
@@ -10,7 +12,7 @@ const totalEvents = ref(0)
 const page = computed(() => props.page)
 
 const totalPages = computed(() => {
-  return Math.ceil(totalEvents.value / 2)
+  return Math.ceil(totalEvents.value / 4)
 })
 
 const hasNextPage = computed(() => {
@@ -20,13 +22,15 @@ const hasNextPage = computed(() => {
 onMounted(() => {
   watchEffect(() => {
     events.value = null
-    EventService.getEvents(2, page.value)
+    EventService.getEvents(4, page.value)
       .then((response) => {
         events.value = response.data
         totalEvents.value = response.headers['x-total-count']
       })
       .catch((error) => {
-        console.log(error)
+        router.push({
+          name: 'network-error',
+        })
       })
   })
 })

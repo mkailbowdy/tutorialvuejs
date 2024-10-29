@@ -6,9 +6,22 @@ import SimpleFormView from '@/views/SimpleFormView.vue'
 import RegisterView from '@/views/event/RegisterView.vue'
 import EditView from '@/views/event/EditView.vue'
 import LayoutView from '@/views/event/LayoutView.vue'
+import NotFoundView from '@/views/NotFoundView.vue'
+import NetworkErrorView from '@/views/NetworkErrorView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  scrollBehavior(to, from, savedPosition) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        if (savedPosition) {
+          resolve(savedPosition)
+        } else {
+          resolve({ top: 0 })
+        }
+      }, 400) // Small delay to ensure content is loaded
+    })
+  },
   routes: [
     {
       path: '/',
@@ -69,6 +82,22 @@ const router = createRouter({
       path: '/form',
       name: 'form',
       component: SimpleFormView,
+    },
+    {
+      path: '/:catchAll(.*)',
+      name: 'NotFound',
+      component: NotFoundView,
+    },
+    {
+      path: '/404/:resource',
+      name: '404Resource',
+      component: NotFoundView,
+      props: true,
+    },
+    {
+      path: '/network-error',
+      name: 'network-error',
+      component: NetworkErrorView,
     },
   ],
 })

@@ -16,6 +16,10 @@ defineProps({
     type: String,
     default: '',
   },
+  placeholder: {
+    type: String,
+    default: '',
+  },
 })
 
 const uuid = UniqueID().getID()
@@ -25,8 +29,8 @@ const uuid = UniqueID().getID()
   <label :for="uuid">{{ label }}</label>
   <input
     v-bind="$attrs"
-    :placeholder="label"
     class="field"
+    :placeholder="placeholder"
     :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)"
     :id="uuid"
